@@ -1,89 +1,116 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pedido - Boteco 3 Irmãos</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f8f0e3;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: #fff3e0;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-    }
-    h2 {
-      margin-bottom: 20px;
-      color: #d35400;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    button {
-      background-color: #d35400;
-      color: white;
-      border: none;
-      padding: 15px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #e67e22;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido - Boteco 3 Irmãos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f0e3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff3e0;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #d35400;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #d35400;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #e67e22;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+        .bebida-opcoes {
+            text-align: left;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Faça seu pedido</h2>
+    <div class="container">
+        <h2>Faça seu pedido</h2>
 
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" placeholder="Seu nome" required>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" placeholder="Seu nome" required>
 
-    <label for="endereco">Endereço:</label>
-    <input type="text" id="endereco" placeholder="Seu endereço" required>
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" placeholder="Seu endereço" required>
 
-    <button onclick="enviar()">Fazer Pedido</button>
-  </div>
+        <label>Escolha as Bebidas:</label>
+        <div class="bebida-opcoes">
+            <div>
+                <input type="checkbox" id="Brahma" name="bebida" value="Brahma 600ml">
+                <label for="bhama" style="display: inline;">Brahma 600ml</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Antarctica" name="bebida" value="Antarctica 600ml">
+                <label for="antartica" style="display: inline;">Antarctica 600ml</label>
+            </div>
+        </div>
 
-  <script>
-    function enviar() {
-      let nome = document.getElementById("nome").value.trim();
-      let endereco = document.getElementById("endereco").value.trim();
+        <button onclick="enviar()">Fazer Pedido</button>
+    </div>
 
-      if(nome === "" || endereco === "") {
-        alert("Por favor, preencha Nome e Endereço!");
-        return;
-      }
+    <script>
+        function enviar() {
+            let nome = document.getElementById("nome").value.trim();
+            let endereco = document.getElementById("endereco").value.trim();
+            
+            let bebidasSelecionadas = [];
+            let checkboxes = document.querySelectorAll('input[name="bebida"]:checked');
+            
+            checkboxes.forEach((checkbox) => {
+                bebidasSelecionadas.push(checkbox.value);
+            });
 
-      let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.`;
-      let url = "https://wa.me/5598985909434?text=" + encodeURIComponent(mensagem);
+            if(nome === "" || endereco === "") {
+                alert("Por favor, preencha Nome e Endereço!");
+                return;
+            }
 
-      window.open(url, "_blank");
-    }
-  </script>
+            let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.`;
+            if (bebidasSelecionadas.length > 0) {
+                mensagem += ` Bebidas: ${bebidasSelecionadas.join(', ')}.`;
+            }
+
+            let url = "https://wa.me/5598985909434?text=" + encodeURIComponent(mensagem);
+            window.open(url, "_blank");
+        }
+    </script>
 </body>
 </html>
