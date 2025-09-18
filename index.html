@@ -27,7 +27,7 @@
       margin-bottom: 20px;
       color: #d35400;
     }
-    input, select {
+    input {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
@@ -66,15 +66,6 @@
     <label for="endereco">Endereço:</label>
     <input type="text" id="endereco" placeholder="Seu endereço" required>
 
-    <label for="bebida">Escolha a bebida:</label>
-    <select id="bebida">
-      <option value="Cerveja">Cerveja</option>
-      <option value="Caipirinha">Caipirinha</option>
-      <option value="Refrigerante">Refrigerante</option>
-      <option value="Suco">Suco</option>
-      <option value="Vodka">Vodka</option>
-    </select>
-
     <button onclick="enviar()">Fazer Pedido</button>
   </div>
 
@@ -82,15 +73,14 @@
     function enviar() {
       let nome = document.getElementById("nome").value.trim();
       let endereco = document.getElementById("endereco").value.trim();
-      let bebida = document.getElementById("bebida").value;
 
       if(nome === "" || endereco === "") {
         alert("Por favor, preencha Nome e Endereço!");
         return;
       }
 
-      let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}. Quero pedir: ${bebida}`;
-      let url = "https://wa.me/55985909434?text=" + encodeURIComponent(mensagem);
+      let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.`;
+      let url = "https://wa.me/5598985909434?text=" + encodeURIComponent(mensagem);
 
       window.open(url, "_blank");
     }
