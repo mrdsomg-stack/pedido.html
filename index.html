@@ -18,6 +18,8 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px; /* Adiciona um padding para evitar que o conteúdo encoste nas bordas */
+            box-sizing: border-box; /* Garante que o padding não aumente a largura total */
         }
         .container {
             background: rgba(255, 243, 224, 0.9); 
@@ -25,21 +27,28 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
             width: 90%;
-            max-width: 400px;
+            max-width: 500px; /* Aumentei um pouco a largura máxima para os cards */
             text-align: center;
         }
         h2 {
             margin-bottom: 20px;
             color: #d35400;
         }
-        input, select {
+        h3 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #d35400;
+        }
+        input[type="text"] { /* Estilo para o input de nome e endereço */
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
             font-size: 16px;
+            box-sizing: border-box; /* Inclui padding e border na largura total */
         }
+        /* Botões gerais */
         button {
             background-color: #d35400;
             color: white;
@@ -50,6 +59,7 @@
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
+            box-sizing: border-box;
         }
         button:hover {
             background-color: #e67e22;
@@ -59,8 +69,80 @@
             display: block;
             margin-top: 10px;
             text-align: left;
+            margin-bottom: 5px;
         }
-        /* Estilos para a lista de itens no carrinho */
+
+        /* --- Estilos para os Cards de Produto --- */
+        #lista-bebidas {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .produto-card {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 15px;
+            margin-bottom: 10px;
+        }
+        .produto-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            margin-right: 15px;
+            object-fit: cover;
+            flex-shrink: 0; /* Impede que a imagem encolha */
+        }
+        .produto-card .info-produto {
+            flex-grow: 1;
+            text-align: left;
+            margin-right: 10px; /* Espaço entre info e ações */
+        }
+        .produto-card h3 {
+            margin: 0 0 3px 0;
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.2; /* Espaçamento entre linhas */
+        }
+        .produto-card p {
+            margin: 0 0 5px 0;
+            font-size: 0.85em;
+            color: #666;
+        }
+        .produto-card .preco {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #d35400;
+            display: block;
+            margin-top: 5px;
+        }
+        .produto-card .acoes-produto {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            flex-shrink: 0; /* Impede que as ações encolham */
+        }
+        .produto-card .quantidade-input {
+            width: 60px;
+            padding: 5px;
+            margin: 0 0 5px 0;
+            font-size: 0.9em;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .produto-card .adicionar-btn {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            margin-top: 0;
+            background-color: #28a745; /* Cor verde para o botão Adicionar */
+        }
+        .produto-card .adicionar-btn:hover {
+            background-color: #218838;
+        }
+
+        /* --- Estilos para a Cesta de Pedidos --- */
         #cesta-itens {
             list-style: none;
             padding: 0;
@@ -77,6 +159,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 0.95em;
         }
         #cesta-itens li .remover-item {
             background: #e74c3c;
@@ -86,6 +169,8 @@
             padding: 4px 8px;
             cursor: pointer;
             font-size: 0.8em;
+            width: auto; /* Ajusta largura */
+            margin-top: 0; /* Remove margem */
         }
         #cesta-itens li .remover-item:hover {
             background: #c0392b;
@@ -100,18 +185,6 @@
             border-top: 1px solid #d35400;
             padding-top: 10px;
         }
-        .adicionar-btn {
-            background-color: #28a745; /* Cor verde para o botão Adicionar */
-            margin-top: 5px;
-        }
-        .adicionar-btn:hover {
-            background-color: #218838;
-        }
-        .quantidade-input {
-            width: 80px; /* Ajusta a largura do input de quantidade */
-            display: inline-block;
-            margin-left: 10px;
-        }
     </style>
 </head>
 <body>
@@ -124,21 +197,56 @@
         <label for="endereco">Endereço:</label>
         <input type="text" id="endereco" placeholder="Seu endereço" required>
 
-        <h3>Adicionar Bebidas:</h3>
-        <label for="bebidas-menu">Escolha a Bebida:</label>
-        <select id="bebidas-menu">
-            <option value="">Selecione uma bebida</option>
-            <option value="Bhama 600ml" data-price="8.50">Bhama 600ml - R$ 8,50</option>
-            <option value="Antartica 600ml" data-price="9.00">Antarctica 600ml - R$ 9,00</option>
-            <option value="Coca-Cola 1L" data-price="7.00">Coca-Cola 1L - R$ 7,00</option>
-            </select>
+        <h3>Nosso Cardápio:</h3>
+        <div id="lista-bebidas">
+            <div class="produto-card">
+                <img src="https://via.placeholder.com/100x100?text=Bhama" alt="Bhama 600ml">
+                <div class="info-produto">
+                    <h3>Bhama 600ml</h3>
+                    <p>Cerveja Pilsen tradicional e refrescante</p>
+                    <span class="preco">R$ 8,50</span>
+                </div>
+                <div class="acoes-produto">
+                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-bhama">
+                    <button class="adicionar-btn" 
+                            onclick="adicionarItemParaCard('Bhama 600ml', 8.50, 'quantidade-bhama')">
+                        Adicionar
+                    </button>
+                </div>
+            </div>
 
-        <label for="quantidade-bebida">Quantidade:</label>
-        <input type="number" id="quantidade-bebida" class="quantidade-input" value="1" min="1">
-        
-        <button class="adicionar-btn" onclick="adicionarItem()">Adicionar ao Pedido</button>
+            <div class="produto-card">
+                <img src="https://via.placeholder.com/100x100?text=Antarctica" alt="Antarctica 600ml">
+                <div class="info-produto">
+                    <h3>Antarctica 600ml</h3>
+                    <p>A clássica cerveja Pilsen</p>
+                    <span class="preco">R$ 9,00</span>
+                </div>
+                <div class="acoes-produto">
+                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-antarctica">
+                    <button class="adicionar-btn" 
+                            onclick="adicionarItemParaCard('Antarctica 600ml', 9.00, 'quantidade-antarctica')">
+                        Adicionar
+                    </button>
+                </div>
+            </div>
 
-        <h3>Seu Pedido:</h3>
+            <div class="produto-card">
+                <img src="https://via.placeholder.com/100x100?text=Coca-Cola" alt="Coca-Cola 1L">
+                <div class="info-produto">
+                    <h3>Coca-Cola 1L</h3>
+                    <p>Refrigerante sabor cola</p>
+                    <span class="preco">R$ 7,00</span>
+                </div>
+                <div class="acoes-produto">
+                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-coca">
+                    <button class="adicionar-btn" 
+                            onclick="adicionarItemParaCard('Coca-Cola 1L', 7.00, 'quantidade-coca')">
+                        Adicionar
+                    </button>
+                </div>
+            </div>
+            </div> <h3>Seu Pedido:</h3>
         <ul id="cesta-itens">
             </ul>
 
@@ -182,19 +290,9 @@
             });
         }
 
-        function adicionarItem() {
-            const bebidasMenu = document.getElementById("bebidas-menu");
-            const quantidadeInput = document.getElementById("quantidade-bebida");
-
-            const selectedOption = bebidasMenu.options[bebidasMenu.selectedIndex];
-            
-            if (selectedOption.value === "") {
-                alert("Por favor, selecione uma bebida.");
-                return;
-            }
-
-            const nomeBebida = selectedOption.value;
-            const precoBebida = parseFloat(selectedOption.dataset.price);
+        // Função ajustada para ser chamada pelos botões de 'Adicionar' dos cards
+        function adicionarItemParaCard(nomeBebida, precoBebida, idInputQuantidade) {
+            const quantidadeInput = document.getElementById(idInputQuantidade);
             const quantidade = parseInt(quantidadeInput.value);
 
             if (isNaN(quantidade) || quantidade <= 0) {
@@ -214,9 +312,8 @@
                 });
             }
             
-            // Reseta a seleção e a quantidade
-            bebidasMenu.value = "";
-            quantidadeInput.value = "1";
+            // Opcional: Reseta a quantidade no input do card após adicionar
+            // quantidadeInput.value = "1"; 
 
             renderizarCesta(); // Atualiza a exibição da cesta
         }
