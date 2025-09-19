@@ -60,14 +60,57 @@
             margin-top: 10px;
             text-align: left;
         }
-        /* Novo estilo para o total */
-        #total-pedido {
+        /* Estilos para a lista de itens no carrinho */
+        #cesta-itens {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        #cesta-itens li {
+            background: #fefefe;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #cesta-itens li .remover-item {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        #cesta-itens li .remover-item:hover {
+            background: #c0392b;
+        }
+        #total-geral {
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.3em;
             color: #d35400;
             margin-top: 15px;
-            text-align: right; /* Alinha o total à direita */
-            display: block; /* Para ocupar a largura total */
+            text-align: right;
+            display: block;
+            border-top: 1px solid #d35400;
+            padding-top: 10px;
+        }
+        .adicionar-btn {
+            background-color: #28a745; /* Cor verde para o botão Adicionar */
+            margin-top: 5px;
+        }
+        .adicionar-btn:hover {
+            background-color: #218838;
+        }
+        .quantidade-input {
+            width: 80px; /* Ajusta a largura do input de quantidade */
+            display: inline-block;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -81,58 +124,141 @@
         <label for="endereco">Endereço:</label>
         <input type="text" id="endereco" placeholder="Seu endereço" required>
 
-        <label for="bebidas">Escolha as Bebidas:</label>
-        <select id="bebidas" multiple size="3">
+        <h3>Adicionar Bebidas:</h3>
+        <label for="bebidas-menu">Escolha a Bebida:</label>
+        <select id="bebidas-menu">
+            <option value="">Selecione uma bebida</option>
             <option value="Bhama 600ml" data-price="8.50">Bhama 600ml - R$ 8,50</option>
             <option value="Antartica 600ml" data-price="9.00">Antarctica 600ml - R$ 9,00</option>
             <option value="Coca-Cola 1L" data-price="7.00">Coca-Cola 1L - R$ 7,00</option>
-        </select>
+            </select>
+
+        <label for="quantidade-bebida">Quantidade:</label>
+        <input type="number" id="quantidade-bebida" class="quantidade-input" value="1" min="1">
         
-        <span id="total-pedido">Total: R$ 0,00</span> <button onclick="enviar()">Fazer Pedido</button>
+        <button class="adicionar-btn" onclick="adicionarItem()">Adicionar ao Pedido</button>
+
+        <h3>Seu Pedido:</h3>
+        <ul id="cesta-itens">
+            </ul>
+
+        <span id="total-geral">Total: R$ 0,00</span>
+        
+        <button onclick="enviar()">Fazer Pedido</button>
     </div>
 
     <script>
-        // Função para calcular e exibir o total do pedido
-        function calcularTotal() {
-            let total = 0;
-            let bebidasSelect = document.getElementById("bebidas");
-            let selectedOptions = Array.from(bebidasSelect.selectedOptions);
+        let itensDoPedido = []; // Array para armazenar os itens da cesta
 
-            selectedOptions.forEach(option => {
-                total += parseFloat(option.dataset.price); // Pega o preço do atributo data-price
+        function renderizarCesta() {
+            const cestaItensDiv = document.getElementById("cesta-itens");
+            cestaItensDiv.innerHTML = ''; // Limpa a lista antes de renderizar novamente
+            let totalGeral = 0;
+
+            if (itensDoPedido.length === 0) {
+                cestaItensDiv.innerHTML = '<li>Nenhum item adicionado ainda.</li>';
+            } else {
+                itensDoPedido.forEach((item, index) => {
+                    const subtotal = item.quantidade * item.preco;
+                    totalGeral += subtotal;
+
+                    const listItem = document.createElement("li");
+                    listItem.innerHTML = `
+                        <span>${item.nome} (x${item.quantidade}) - R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
+                        <button class="remover-item" data-index="${index}">Remover</button>
+                    `;
+                    cestaItensDiv.appendChild(listItem);
+                });
+            }
+
+            document.getElementById("total-geral").innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+
+            // Adiciona ouvintes de evento para os botões de remover
+            document.querySelectorAll('.remover-item').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const index = event.target.dataset.index;
+                    removerItem(index);
+                });
             });
-
-            document.getElementById("total-pedido").innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
-            return total; // Retorna o total para ser usado na mensagem do WhatsApp
         }
 
-        // Adiciona um "ouvidor" de eventos para o select de bebidas
-        document.getElementById("bebidas").addEventListener("change", calcularTotal);
+        function adicionarItem() {
+            const bebidasMenu = document.getElementById("bebidas-menu");
+            const quantidadeInput = document.getElementById("quantidade-bebida");
 
-        // Função para enviar o pedido
+            const selectedOption = bebidasMenu.options[bebidasMenu.selectedIndex];
+            
+            if (selectedOption.value === "") {
+                alert("Por favor, selecione uma bebida.");
+                return;
+            }
+
+            const nomeBebida = selectedOption.value;
+            const precoBebida = parseFloat(selectedOption.dataset.price);
+            const quantidade = parseInt(quantidadeInput.value);
+
+            if (isNaN(quantidade) || quantidade <= 0) {
+                alert("Por favor, insira uma quantidade válida (mínimo 1).");
+                return;
+            }
+
+            // Verifica se o item já existe na cesta para somar a quantidade
+            const itemExistente = itensDoPedido.find(item => item.nome === nomeBebida);
+            if (itemExistente) {
+                itemExistente.quantidade += quantidade;
+            } else {
+                itensDoPedido.push({
+                    nome: nomeBebida,
+                    preco: precoBebida,
+                    quantidade: quantidade
+                });
+            }
+            
+            // Reseta a seleção e a quantidade
+            bebidasMenu.value = "";
+            quantidadeInput.value = "1";
+
+            renderizarCesta(); // Atualiza a exibição da cesta
+        }
+
+        function removerItem(index) {
+            itensDoPedido.splice(index, 1); // Remove o item do array
+            renderizarCesta(); // Atualiza a exibição da cesta
+        }
+
+        // Função para enviar o pedido via WhatsApp
         function enviar() {
             let nome = document.getElementById("nome").value.trim();
             let endereco = document.getElementById("endereco").value.trim();
-            let bebidas = Array.from(document.getElementById("bebidas").selectedOptions).map(option => option.value);
-            let totalPedido = calcularTotal(); // Recalcula o total antes de enviar
 
             if(nome === "" || endereco === "") {
                 alert("Por favor, preencha Nome e Endereço!");
                 return;
             }
-
-            let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.`;
-            if (bebidas.length > 0) {
-                mensagem += `\nBebidas: ${bebidas.join(', ')}.`;
+            
+            if (itensDoPedido.length === 0) {
+                alert("Por favor, adicione pelo menos uma bebida ao pedido!");
+                return;
             }
-            mensagem += `\nTotal do pedido: R$ ${totalPedido.toFixed(2).replace('.', ',')}.`; // Adiciona o total
+
+            let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.\n\n`;
+            mensagem += "Detalhes do Pedido:\n";
+
+            let totalPedido = 0;
+            itensDoPedido.forEach(item => {
+                const subtotal = item.quantidade * item.preco;
+                mensagem += `- ${item.nome} (x${item.quantidade}) = R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+                totalPedido += subtotal;
+            });
+
+            mensagem += `\nTotal Geral: R$ ${totalPedido.toFixed(2).replace('.', ',')}.`;
 
             let url = "https://wa.me/5598985909434?text=" + encodeURIComponent(mensagem);
             window.open(url, "_blank");
         }
 
-        // Garante que o total seja calculado na primeira vez que a página carrega
-        window.onload = calcularTotal; 
+        // Renderiza a cesta quando a página carrega pela primeira vez
+        window.onload = renderizarCesta;
     </script>
 </body>
 </html>
