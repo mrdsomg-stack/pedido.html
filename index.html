@@ -8,13 +8,11 @@
         body {
             font-family: Arial, sans-serif;
             background: #f8f0e3;
-            /* Início das novas propriedades para a imagem de fundo */
             background-image: url('https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/b8cc53e655cc600c89d896620f1718ffc692d2e2/fundoparte2.png');
-            background-size: cover;          /* Faz a imagem cobrir toda a área */
-            background-repeat: no-repeat;    /* Impede que a imagem se repita */
-            background-attachment: fixed;    /* Fixa a imagem no lugar enquanto a página rola */
-            background-position: center center; /* Centraliza a imagem */
-            /* Fim das novas propriedades */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,7 +20,6 @@
             margin: 0;
         }
         .container {
-            /* Adicionei uma opacidade ao fundo do container para o texto ficar mais legível sobre a imagem */
             background: rgba(255, 243, 224, 0.9); 
             padding: 30px;
             border-radius: 10px;
@@ -63,6 +60,15 @@
             margin-top: 10px;
             text-align: left;
         }
+        /* Novo estilo para o total */
+        #total-pedido {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #d35400;
+            margin-top: 15px;
+            text-align: right; /* Alinha o total à direita */
+            display: block; /* Para ocupar a largura total */
+        }
     </style>
 </head>
 <body>
@@ -76,19 +82,39 @@
         <input type="text" id="endereco" placeholder="Seu endereço" required>
 
         <label for="bebidas">Escolha as Bebidas:</label>
-        <select id="bebidas" multiple size="2">
-            <option value="Bhama 600ml">Bhama 600ml</option>
-            <option value="Antartica 600ml">Antartica 600ml</option>
+        <select id="bebidas" multiple size="3">
+            <option value="Bhama 600ml" data-price="8.50">Bhama 600ml - R$ 8,50</option>
+            <option value="Antartica 600ml" data-price="9.00">Antarctica 600ml - R$ 9,00</option>
+            <option value="Coca-Cola 1L" data-price="7.00">Coca-Cola 1L - R$ 7,00</option>
         </select>
-
-        <button onclick="enviar()">Fazer Pedido</button>
+        
+        <span id="total-pedido">Total: R$ 0,00</span> <button onclick="enviar()">Fazer Pedido</button>
     </div>
 
     <script>
+        // Função para calcular e exibir o total do pedido
+        function calcularTotal() {
+            let total = 0;
+            let bebidasSelect = document.getElementById("bebidas");
+            let selectedOptions = Array.from(bebidasSelect.selectedOptions);
+
+            selectedOptions.forEach(option => {
+                total += parseFloat(option.dataset.price); // Pega o preço do atributo data-price
+            });
+
+            document.getElementById("total-pedido").innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+            return total; // Retorna o total para ser usado na mensagem do WhatsApp
+        }
+
+        // Adiciona um "ouvidor" de eventos para o select de bebidas
+        document.getElementById("bebidas").addEventListener("change", calcularTotal);
+
+        // Função para enviar o pedido
         function enviar() {
             let nome = document.getElementById("nome").value.trim();
             let endereco = document.getElementById("endereco").value.trim();
             let bebidas = Array.from(document.getElementById("bebidas").selectedOptions).map(option => option.value);
+            let totalPedido = calcularTotal(); // Recalcula o total antes de enviar
 
             if(nome === "" || endereco === "") {
                 alert("Por favor, preencha Nome e Endereço!");
@@ -97,12 +123,16 @@
 
             let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.`;
             if (bebidas.length > 0) {
-                mensagem += ` Bebidas: ${bebidas.join(', ')}.`;
+                mensagem += `\nBebidas: ${bebidas.join(', ')}.`;
             }
+            mensagem += `\nTotal do pedido: R$ ${totalPedido.toFixed(2).replace('.', ',')}.`; // Adiciona o total
 
             let url = "https://wa.me/5598985909434?text=" + encodeURIComponent(mensagem);
             window.open(url, "_blank");
         }
+
+        // Garante que o total seja calculado na primeira vez que a página carrega
+        window.onload = calcularTotal; 
     </script>
 </body>
 </html>
