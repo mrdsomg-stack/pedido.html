@@ -8,6 +8,13 @@
         body {
             font-family: Arial, sans-serif;
             background: #f8f0e3;
+            /* Início das novas propriedades para a imagem de fundo */
+            background-image: url('https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/b8cc53e655cc600c89d896620f1718ffc692d2e2/fundoparte2.png');
+            background-size: cover;          /* Faz a imagem cobrir toda a área */
+            background-repeat: no-repeat;    /* Impede que a imagem se repita */
+            background-attachment: fixed;    /* Fixa a imagem no lugar enquanto a página rola */
+            background-position: center center; /* Centraliza a imagem */
+            /* Fim das novas propriedades */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,7 +22,8 @@
             margin: 0;
         }
         .container {
-            background: #fff3e0;
+            /* Adicionei uma opacidade ao fundo do container para o texto ficar mais legível sobre a imagem */
+            background: rgba(255, 243, 224, 0.9); 
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
