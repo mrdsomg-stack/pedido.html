@@ -1,361 +1,362 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido - Boteco 3 Irmãos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f8f0e3;
-            background-image: url('https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/b8cc53e655cc600c89d896620f1718ffc692d2e2/fundoparte2.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: center center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px; /* Adiciona um padding para evitar que o conteúdo encoste nas bordas */
-            box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-        }
-        .container {
-            background: rgba(255, 243, 224, 0.9); 
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            width: 90%;
-            max-width: 500px; /* Aumentei um pouco a largura máxima para os cards */
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 20px;
-            color: #d35400;
-        }
-        h3 {
-            margin-top: 25px;
-            margin-bottom: 15px;
-            color: #d35400;
-        }
-        input[type="text"] { /* Estilo para o input de nome e endereço */
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            box-sizing: border-box; /* Inclui padding e border na largura total */
-        }
-        /* Botões gerais */
-        button {
-            background-color: #d35400;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            box-sizing: border-box;
-        }
-        button:hover {
-            background-color: #e67e22;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-            text-align: left;
-            margin-bottom: 5px;
-        }
-
-        /* --- Estilos para os Cards de Produto --- */
-        #lista-bebidas {
-            margin-top: 20px;
-            text-align: left;
-        }
-        .produto-card {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 10px 15px;
-            margin-bottom: 10px;
-        }
-        .produto-card img {
-            width: 80px;
-            height: 80px;
-            border-radius: 5px;
-            margin-right: 15px;
-            object-fit: cover;
-            flex-shrink: 0; /* Impede que a imagem encolha */
-        }
-        .produto-card .info-produto {
-            flex-grow: 1;
-            text-align: left;
-            margin-right: 10px; /* Espaço entre info e ações */
-        }
-        .produto-card h3 {
-            margin: 0 0 3px 0;
-            color: #333;
-            font-size: 1.1em;
-            line-height: 1.2; /* Espaçamento entre linhas */
-        }
-        .produto-card p {
-            margin: 0 0 5px 0;
-            font-size: 0.85em;
-            color: #666;
-        }
-        .produto-card .preco {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #d35400;
-            display: block;
-            margin-top: 5px;
-        }
-        .produto-card .acoes-produto {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            flex-shrink: 0; /* Impede que as ações encolham */
-        }
-        .produto-card .quantidade-input {
-            width: 60px;
-            padding: 5px;
-            margin: 0 0 5px 0;
-            font-size: 0.9em;
-            text-align: center;
-            box-sizing: border-box;
-        }
-        .produto-card .adicionar-btn {
-            width: auto;
-            padding: 5px 10px;
-            font-size: 0.9em;
-            margin-top: 0;
-            background-color: #28a745; /* Cor verde para o botão Adicionar */
-        }
-        .produto-card .adicionar-btn:hover {
-            background-color: #218838;
-        }
-
-        /* --- Estilos para a Cesta de Pedidos --- */
-        #cesta-itens {
-            list-style: none;
-            padding: 0;
-            margin-top: 15px;
-            text-align: left;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-        }
-        #cesta-itens li {
-            background: #fefefe;
-            padding: 8px;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.95em;
-        }
-        #cesta-itens li .remover-item {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            padding: 4px 8px;
-            cursor: pointer;
-            font-size: 0.8em;
-            width: auto; /* Ajusta largura */
-            margin-top: 0; /* Remove margem */
-        }
-        #cesta-itens li .remover-item:hover {
-            background: #c0392b;
-        }
-        #total-geral {
-            font-weight: bold;
-            font-size: 1.3em;
-            color: #d35400;
-            margin-top: 15px;
-            text-align: right;
-            display: block;
-            border-top: 1px solid #d35400;
-            padding-top: 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido - Boteco 3 Irmãos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f0e3; /* Cor de fallback caso o vídeo não carregue */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            background-size: cover;
+            filter: brightness(50%); /* Opcional: Escurece o vídeo para melhor contraste com o texto */
+        }
+        .container {
+            background: rgba(255, 243, 224, 0.9); 
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #d35400;
+        }
+        h3 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #d35400;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #d35400;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        button:hover {
+            background-color: #e67e22;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+        #lista-bebidas {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .produto-card {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 15px;
+            margin-bottom: 10px;
+        }
+        .produto-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            margin-right: 15px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .produto-card .info-produto {
+            flex-grow: 1;
+            text-align: left;
+            margin-right: 10px;
+        }
+        .produto-card h3 {
+            margin: 0 0 3px 0;
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.2;
+        }
+        .produto-card p {
+            margin: 0 0 5px 0;
+            font-size: 0.85em;
+            color: #666;
+        }
+        .produto-card .preco {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #d35400;
+            display: block;
+            margin-top: 5px;
+        }
+        .produto-card .acoes-produto {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+        .produto-card .quantidade-input {
+            width: 60px;
+            padding: 5px;
+            margin: 0 0 5px 0;
+            font-size: 0.9em;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .produto-card .adicionar-btn {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            margin-top: 0;
+            background-color: #28a745;
+        }
+        .produto-card .adicionar-btn:hover {
+            background-color: #218838;
+        }
+        #cesta-itens {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        #cesta-itens li {
+            background: #fefefe;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95em;
+        }
+        #cesta-itens li .remover-item {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            width: auto;
+            margin-top: 0;
+        }
+        #cesta-itens li .remover-item:hover {
+            background: #c0392b;
+        }
+        #total-geral {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: #d35400;
+            margin-top: 15px;
+            text-align: right;
+            display: block;
+            border-top: 1px solid #d35400;
+            padding-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Faça seu pedido</h2>
+    <video autoplay muted loop id="video-background">
+        <source src="https://github.com/mrdsomg-stack/pedido.html/raw/a032d8f63831097649aecf5e9d21d06170749c8c/videoplanodefundo.mp4" type="video/mp4">
+        Seu navegador não suporta o elemento de vídeo.
+    </video>
 
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" placeholder="Seu nome" required>
+    <div class="container">
+        <h2>Faça seu pedido</h2>
 
-        <label for="endereco">Endereço:</label>
-        <input type="text" id="endereco" placeholder="Seu endereço" required>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" placeholder="Seu nome" required>
 
-        <h3>Nosso Cardápio:</h3>
-        <div id="lista-bebidas">
-            <div class="produto-card">
-                <img src="https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/224f7ae47f808de0dc7a5fa76c9012c94f1abf23/brahma%20600ml.jpg" alt="Bhama 600ml">
-                <div class="info-produto">
-                    <h3>Brahma 600ml</h3>
-                    <p>Cerveja Pilsen tradicional e refrescante</p>
-                    <span class="preco">R$ 8,50</span>
-                </div>
-                <div class="acoes-produto">
-                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-bhama">
-                    <button class="adicionar-btn" 
-                            onclick="adicionarItemParaCard('Brahma 600ml', 8.50, 'quantidade-bhama')">
-                        Adicionar
-                    </button>
-                </div>
-            </div>
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" placeholder="Seu endereço" required>
 
-            <div class="produto-card">
-                <img src="https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/224f7ae47f808de0dc7a5fa76c9012c94f1abf23/Antarctica%20600ml.jpg" alt="Antarctica 600ml">
-                <div class="info-produto">
-                    <h3>Antarctica 600ml</h3>
-                    <p>A clássica cerveja Pilsen</p>
-                    <span class="preco">R$ 9,00</span>
-                </div>
-                <div class="acoes-produto">
-                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-antarctica">
-                    <button class="adicionar-btn" 
-                            onclick="adicionarItemParaCard('Antarctica 600ml', 9.00, 'quantidade-antarctica')">
-                        Adicionar
-                    </button>
-                </div>
-            </div>
+        <h3>Nosso Cardápio:</h3>
+        <div id="lista-bebidas">
+            <div class="produto-card">
+                <img src="https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/224f7ae47f808de0dc7a5fa76c9012c94f1abf23/brahma%20600ml.jpg" alt="Bhama 600ml">
+                <div class="info-produto">
+                    <h3>Brahma 600ml</h3>
+                    <p>Cerveja Pilsen tradicional e refrescante</p>
+                    <span class="preco">R$ 8,50</span>
+                </div>
+                <div class="acoes-produto">
+                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-bhama">
+                    <button class="adicionar-btn" 
+                            onclick="adicionarItemParaCard('Brahma 600ml', 8.50, 'quantidade-bhama')">
+                        Adicionar
+                    </button>
+                </div>
+            </div>
 
-            <div class="produto-card">
-                <img src="https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/224f7ae47f808de0dc7a5fa76c9012c94f1abf23/coca-cola%201l.jpg" alt="Coca-Cola 1L">
-                <div class="info-produto">
-                    <h3>Coca-Cola 1L</h3>
-                    <p>Refrigerante sabor cola</p>
-                    <span class="preco">R$ 7,00</span>
-                </div>
-                <div class="acoes-produto">
-                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-coca">
-                    <button class="adicionar-btn" 
-                            onclick="adicionarItemParaCard('Coca-Cola 1L', 7.00, 'quantidade-coca')">
-                        Adicionar
-                    </button>
-                </div>
-            </div>
-            </div> <h3>Seu Pedido:</h3>
-        <ul id="cesta-itens">
-            </ul>
+            <div class="produto-card">
+                <img src="https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/224f7ae47f808de0dc7a5fa76c9012c94f1abf23/Antarctica%20600ml.jpg" alt="Antarctica 600ml">
+                <div class="info-produto">
+                    <h3>Antarctica 600ml</h3>
+                    <p>A clássica cerveja Pilsen</p>
+                    <span class="preco">R$ 9,00</span>
+                </div>
+                <div class="acoes-produto">
+                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-antarctica">
+                    <button class="adicionar-btn" 
+                            onclick="adicionarItemParaCard('Antarctica 600ml', 9.00, 'quantidade-antarctica')">
+                        Adicionar
+                    </button>
+                </div>
+            </div>
 
-        <span id="total-geral">Total: R$ 0,00</span>
+            <div class="produto-card">
+                <img src="https://raw.githubusercontent.com/mrdsomg-stack/pedido.html/224f7ae47f808de0dc7a5fa76c9012c94f1abf23/coca-cola%201l.jpg" alt="Coca-Cola 1L">
+                <div class="info-produto">
+                    <h3>Coca-Cola 1L</h3>
+                    <p>Refrigerante sabor cola</p>
+                    <span class="preco">R$ 7,00</span>
+                </div>
+                <div class="acoes-produto">
+                    <input type="number" class="quantidade-input" value="1" min="1" id="quantidade-coca">
+                    <button class="adicionar-btn" 
+                            onclick="adicionarItemParaCard('Coca-Cola 1L', 7.00, 'quantidade-coca')">
+                        Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
         
-        <button onclick="enviar()">Fazer Pedido</button>
-    </div>
+        <h3>Seu Pedido:</h3>
+        <ul id="cesta-itens">
+        </ul>
 
-    <script>
-        let itensDoPedido = []; // Array para armazenar os itens da cesta
+        <span id="total-geral">Total: R$ 0,00</span>
+        
+        <button onclick="enviar()">Fazer Pedido</button>
+    </div>
 
-        function renderizarCesta() {
-            const cestaItensDiv = document.getElementById("cesta-itens");
-            cestaItensDiv.innerHTML = ''; // Limpa a lista antes de renderizar novamente
-            let totalGeral = 0;
+    <script>
+        let itensDoPedido = [];
 
-            if (itensDoPedido.length === 0) {
-                cestaItensDiv.innerHTML = '<li>Nenhum item adicionado ainda.</li>';
-            } else {
-                itensDoPedido.forEach((item, index) => {
-                    const subtotal = item.quantidade * item.preco;
-                    totalGeral += subtotal;
+        function renderizarCesta() {
+            const cestaItensDiv = document.getElementById("cesta-itens");
+            cestaItensDiv.innerHTML = '';
+            let totalGeral = 0;
 
-                    const listItem = document.createElement("li");
-                    listItem.innerHTML = `
-                        <span>${item.nome} (x${item.quantidade}) - R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
-                        <button class="remover-item" data-index="${index}">Remover</button>
-                    `;
-                    cestaItensDiv.appendChild(listItem);
-                });
-            }
+            if (itensDoPedido.length === 0) {
+                cestaItensDiv.innerHTML = '<li>Nenhum item adicionado ainda.</li>';
+            } else {
+                itensDoPedido.forEach((item, index) => {
+                    const subtotal = item.quantidade * item.preco;
+                    totalGeral += subtotal;
 
-            document.getElementById("total-geral").innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+                    const listItem = document.createElement("li");
+                    listItem.innerHTML = `
+                        <span>${item.nome} (x${item.quantidade}) - R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
+                        <button class="remover-item" data-index="${index}">Remover</button>
+                    `;
+                    cestaItensDiv.appendChild(listItem);
+                });
+            }
 
-            // Adiciona ouvintes de evento para os botões de remover
-            document.querySelectorAll('.remover-item').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const index = event.target.dataset.index;
-                    removerItem(index);
-                });
-            });
-        }
+            document.getElementById("total-geral").innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 
-        // Função ajustada para ser chamada pelos botões de 'Adicionar' dos cards
-        function adicionarItemParaCard(nomeBebida, precoBebida, idInputQuantidade) {
-            const quantidadeInput = document.getElementById(idInputQuantidade);
-            const quantidade = parseInt(quantidadeInput.value);
+            document.querySelectorAll('.remover-item').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const index = event.target.dataset.index;
+                    removerItem(index);
+                });
+            });
+        }
 
-            if (isNaN(quantidade) || quantidade <= 0) {
-                alert("Por favor, insira uma quantidade válida (mínimo 1).");
-                return;
-            }
+        function adicionarItemParaCard(nomeBebida, precoBebida, idInputQuantidade) {
+            const quantidadeInput = document.getElementById(idInputQuantidade);
+            const quantidade = parseInt(quantidadeInput.value);
 
-            // Verifica se o item já existe na cesta para somar a quantidade
-            const itemExistente = itensDoPedido.find(item => item.nome === nomeBebida);
-            if (itemExistente) {
-                itemExistente.quantidade += quantidade;
-            } else {
-                itensDoPedido.push({
-                    nome: nomeBebida,
-                    preco: precoBebida,
-                    quantidade: quantidade
-                });
-            }
-            
-            // Opcional: Reseta a quantidade no input do card para "1" após adicionar
-            // quantidadeInput.value = "1"; 
+            if (isNaN(quantidade) || quantidade <= 0) {
+                alert("Por favor, insira uma quantidade válida (mínimo 1).");
+                return;
+            }
 
-            renderizarCesta(); // Atualiza a exibição da cesta
-        }
+            const itemExistente = itensDoPedido.find(item => item.nome === nomeBebida);
+            if (itemExistente) {
+                itemExistente.quantidade += quantidade;
+            } else {
+                itensDoPedido.push({
+                    nome: nomeBebida,
+                    preco: precoBebida,
+                    quantidade: quantidade
+                });
+            }
+            
+            renderizarCesta();
+        }
 
-        function removerItem(index) {
-            itensDoPedido.splice(index, 1); // Remove o item do array
-            renderizarCesta(); // Atualiza a exibição da cesta
-        }
+        function removerItem(index) {
+            itensDoPedido.splice(index, 1);
+            renderizarCesta();
+        }
 
-        // Função para enviar o pedido via WhatsApp
-        function enviar() {
-            let nome = document.getElementById("nome").value.trim();
-            let endereco = document.getElementById("endereco").value.trim();
+        function enviar() {
+            let nome = document.getElementById("nome").value.trim();
+            let endereco = document.getElementById("endereco").value.trim();
 
-            if(nome === "" || endereco === "") {
-                alert("Por favor, preencha Nome e Endereço!");
-                return;
-            }
-            
-            if (itensDoPedido.length === 0) {
-                alert("Por favor, adicione pelo menos uma bebida ao pedido!");
-                return;
-            }
+            if(nome === "" || endereco === "") {
+                alert("Por favor, preencha Nome e Endereço!");
+                return;
+            }
+            
+            if (itensDoPedido.length === 0) {
+                alert("Por favor, adicione pelo menos uma bebida ao pedido!");
+                return;
+            }
 
-            let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.\n\n`;
-            mensagem += "Detalhes do Pedido:\n";
+            let mensagem = `Olá, meu nome é ${nome}. Meu endereço é ${endereco}.\n\n`;
+            mensagem += "Detalhes do Pedido:\n";
 
-            let totalPedido = 0;
-            itensDoPedido.forEach(item => {
-                const subtotal = item.quantidade * item.preco;
-                mensagem += `- ${item.nome} (x${item.quantidade}) = R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
-                totalPedido += subtotal;
-            });
+            let totalPedido = 0;
+            itensDoPedido.forEach(item => {
+                const subtotal = item.quantidade * item.preco;
+                mensagem += `- ${item.nome} (x${item.quantidade}) = R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+                totalPedido += subtotal;
+            });
 
-            mensagem += `\nTotal Geral: R$ ${totalPedido.toFixed(2).replace('.', ',')}.`;
+            mensagem += `\nTotal Geral: R$ ${totalPedido.toFixed(2).replace('.', ',')}.`;
 
-            let url = "https://wa.me/5598985909434?text=" + encodeURIComponent(mensagem);
-            window.open(url, "_blank");
-        }
+            let url = "https://wa.me/5598985909434?text=" + encodeURIComponent(mensagem);
+            window.open(url, "_blank");
+        }
 
-        // Renderiza a cesta quando a página carrega pela primeira vez
-        window.onload = renderizarCesta;
-    </script>
+        window.onload = renderizarCesta;
+    </script>
 </body>
 </html>
